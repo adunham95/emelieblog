@@ -72,7 +72,7 @@ collections:
         name: resume
         file: "data/meta.json"
         fields:
-          - { label: "Site" Name", name: sitename}
+          - { label: "Site Name", name: sitename}
           - {label: "Logo", name: "logo", widget: image}
           - label: "Social Media"
             name: social
