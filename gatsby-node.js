@@ -18,6 +18,7 @@ exports.createPages = ({ actions, graphql }) => {
             frontmatter {
               tags
               templateKey
+              status
             }
           }
         }
@@ -33,6 +34,7 @@ exports.createPages = ({ actions, graphql }) => {
 
     posts.forEach((edge) => {
       const id = edge.node.id
+      if(edge.node.frontmatter.stats === "Published"){
       createPage({
         path: edge.node.fields.slug,
         tags: edge.node.frontmatter.tags,
@@ -44,6 +46,7 @@ exports.createPages = ({ actions, graphql }) => {
           id,
         },
       })
+      }
     })
 
     // Tag pages:
