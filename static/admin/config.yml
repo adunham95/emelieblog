@@ -19,6 +19,11 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
       - {label: "Template Key", name: "templateKey", widget: "hidden", default: "blog-post"}
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options: ["Draft","Published","Archived"]
+        default: ["Draft"]
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Publish Date", name: "date", widget: "datetime"}
       - {label: "Description", name: "description", widget: "text"}
