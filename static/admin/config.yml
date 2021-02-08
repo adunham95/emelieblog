@@ -64,3 +64,20 @@ collections:
           - {label: Testimonials, name: testimonials, widget: list, fields: [{label: Quote, name: quote, widget: string}, {label: Author, name: author, widget: string}]}
           - {label: Full_image, name: full_image, widget: image}
           - {label: Pricing, name: pricing, widget: object, fields: [{label: Heading, name: heading, widget: string}, {label: Description, name: description, widget: string}, {label: Plans, name: plans, widget: list, fields: [{label: Plan, name: plan, widget: string}, {label: Price, name: price, widget: string}, {label: Description, name: description, widget: string}, {label: Items, name: items, widget: list}]}]}
+
+  - name: content
+    label: Content
+    files:
+      - label: Resume
+        name: resume
+        file: "data/meta.json"
+        fields:
+          - { label: "Site" Name", name: sitename}
+          - {label: "Logo", name: "logo", widget: image}
+          - label: "Social Media"
+            name: social
+            widget: list
+            required: false
+            fields:
+              - { label: Service, name: service, widget: select, options: [linkedin, twitter, facebook, youtube, instagram, teachersPayTeachers]}
+              - { label: URL, name: url, widget: string }
