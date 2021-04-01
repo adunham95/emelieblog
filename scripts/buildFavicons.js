@@ -1,5 +1,6 @@
 const path = require("path")
-const fs = require("fs")
+const fs = require("fs");
+const { func } = require("prop-types");
 // let faviconInfo = [
 
 // ]
@@ -71,7 +72,7 @@ function finish(){
     // console.log(images);
 
     let faviconInfo = images.map(i => {
-            console.log(i)
+            // console.log(i)
             //Make the favicon if does not exist
             let dir = path.join(__dirname,`../static/img/favicons`)
             if (!fs.existsSync(dir)){
@@ -82,16 +83,17 @@ function finish(){
             const found = html.find(element => element.includes(i.name));
 
             //Make the file path
-            let filePath = path.join(__dirname,`../static/img/favicons/${i.name}`);
+            let shortLink = `img/favicons/${i.name}`;
+            let filePath = path.join(__dirname,`../static/${shortLink}`);
             // console.log(typeof found)
             if(typeof found !== "undefined"){
-                const regex = /href="([^"]*)/gi;
-                let htmlString = found.replace(regex, `href="${filePath}"`);
-                // console.log(htmlString)
+
                 return ({
+                    ...htmlStringToObject(found),
                     data: i.contents,
                     link: filePath,
-                    htmlString
+                    shortLink,
+                    htmlString: found
                 })
             }
             else{
@@ -101,19 +103,6 @@ function finish(){
                     htmlString: ""
                 })
             }
-            // fs.writeFile(filePath, i.contents, function updateMarkDown(err) {
-            //     if (err) return console.log(err)
-            //     console.log("writing to " + filePath)
-
-            //     if(typeof found !== "undefined"){
-            //         const regex = /href="([^"]*)/gi
-            //         let htmlString = found.replace(regex, `href="${filePath}"`);
-            //         return ({
-            //             link: filePath,
-            //             htmlString
-            //         })
-            //     }
-            //   })
         }).map(img => {
             fs.writeFile(img.link, img.data, function updateMarkDown(err) {
                     if (err) return console.log(err)
@@ -123,13 +112,13 @@ function finish(){
             return img
         }).filter(i => i.htmlString !== "")
 
-        console.log(faviconInfo)
+        // console.log(faviconInfo)
 
         const metaDataPath = path.join(__dirname, '../data/meta.json')
         fs.readFile(metaDataPath, "utf8", (err, data) => {
             let metaData = JSON.parse(data);
-            console.log(metaData)
-            metaData.favicons = faviconInfo.map(img => {delete img.data; return img});
+            // console.log(metaData)
+            metaData.favicons = faviconInfo;
 
             fs.writeFile(metaDataPath, JSON.stringify(metaData), function updateMarkDown(err) {
                 if (err) return console.log(err)
@@ -137,4 +126,23 @@ function finish(){
         })
         })
 
+}
+
+function htmlStringToObject(string) {
+    let htmlString="";
+
+
+    var tagNameRegex = /(?<=<)(.*?)(?=\s|>|\/)/gi;
+    let dataGrab = /(?:{| )(.+?):(?:")(.*?)(?:}| |")/gi;
+    // let tagName = string.match(tagNameRegex);
+    let tagData = string.replace(/(=)/g, ":").replace(tagNameRegex,'"$1"').replace(/(>|<)/gi,"")
+    console.log(tagData)
+    htmlString = `{tag:${tagData}`;
+    console.log(htmlString);
+   
+    htmlString = htmlString.replace(dataGrab, '"$1":"$2",')
+    htmlString = htmlString.substring(0, htmlString.length - 1);
+    htmlString = `{${htmlString}}`;
+
+    return JSON.parse(htmlString)
 }

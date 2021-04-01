@@ -4,10 +4,10 @@ import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import useSiteMetadata from './SiteMetadata'
 import { withPrefix } from 'gatsby'
-import "./all.scss"
+import "./all.scss";
 
 const TemplateWrapper = ({ children }) => {
-  const { title, description } = useSiteMetadata()
+  const { title, description, favicons } = useSiteMetadata()
 
   return (
     <div>
@@ -16,7 +16,11 @@ const TemplateWrapper = ({ children }) => {
         <title>{title}</title>
         <meta name="description" content={description} />
 
-        <link
+        {
+          favicons.map()
+        }
+
+        {/* <link
           rel="apple-touch-icon"
           sizes="180x180"
           href={`${withPrefix('/')}img/apple-touch-icon.png`}
@@ -32,7 +36,7 @@ const TemplateWrapper = ({ children }) => {
           type="image/png"
           href={`${withPrefix('/')}img/favicon-16x16.png`}
           sizes="16x16"
-        />
+        /> */}
 {/* 
         <link
           rel="mask-icon"
